@@ -1,11 +1,12 @@
 import { useState } from "react";
+import { signController } from "../api/api";
 
 interface Form {
   "email-input": string;
   "password-input": string;
 }
 
-function Form() {
+function Form({ page }: { page: string }) {
   const [form, setForm] = useState<Form>({
     "email-input": "",
     "password-input": "",
@@ -18,6 +19,10 @@ function Form() {
   const formHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     const targetName = event.target.getAttribute("data-testid");
     setForm({ ...form, [targetName!]: event.target.value });
+  };
+
+  const buttonHandler = () => {
+    signController(page, form["email-input"], form["password-input"]);
   };
 
   return (
@@ -40,6 +45,7 @@ function Form() {
         data-testid="signup-button"
         disabled={isValid}
         className="w-32 h-12 tracking-widest font-bold rounded-lg shadow-md bg-blue-200 hover:bg-blue-300"
+        onClick={buttonHandler}
       >
         Enter
       </button>
