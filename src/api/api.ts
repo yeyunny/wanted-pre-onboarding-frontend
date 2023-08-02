@@ -3,8 +3,6 @@ export async function signController(
   email: string,
   password: string
 ) {
-  console.log(endpoint, email, password);
-
   const options = {
     method: "POST",
     headers: {
@@ -12,6 +10,7 @@ export async function signController(
     },
     body: JSON.stringify({ email, password }), // 바디 데이터를 JSON 형식으로 변환하여 전달
   };
+  console.log(options);
 
   try {
     const response = await fetch(

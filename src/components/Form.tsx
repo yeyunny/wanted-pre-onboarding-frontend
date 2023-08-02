@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { signController } from "../api/api";
+import { response } from "express";
 
 interface Form {
   "email-input": string;
@@ -22,7 +23,11 @@ function Form({ page }: { page: string }) {
   };
 
   const buttonHandler = () => {
-    signController(page, form["email-input"], form["password-input"]);
+    signController(page, form["email-input"], form["password-input"]).then(
+      (data) => {
+        console.log(data);
+      }
+    );
   };
 
   return (
