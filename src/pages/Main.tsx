@@ -4,6 +4,14 @@ import { useNavigate } from "react-router-dom";
 function Main() {
   const navigate = useNavigate();
 
+  const redirect = (page: string) => {
+    if (localStorage.getItem("token")) {
+      navigate(`/todo`);
+    } else {
+      page === "/todo" ? navigate(`/signin`) : navigate(page);
+    }
+  };
+
   return (
     <div className="py-80 px-12 rounded-lg shadow-md bg-blue-100">
       <div className="flex justify-center py-10 px-1 rounded-lg bg-red-100">
@@ -17,7 +25,7 @@ function Main() {
       <button
         className="py-2 px-4 font-semibold rounded-lg shadow-md bg-blue-200 hover:bg-blue-300"
         onClick={() => {
-          navigate(`/signup`);
+          redirect(`/signup`);
         }}
       >
         Sign Up
@@ -25,7 +33,7 @@ function Main() {
       <button
         className="py-2 px-4 font-semibold rounded-lg shadow-md bg-blue-200 hover:bg-blue-300"
         onClick={() => {
-          navigate(`/signin`);
+          redirect(`/signin`);
         }}
       >
         Sign In
@@ -33,7 +41,7 @@ function Main() {
       <button
         className="py-2 px-4 font-semibold rounded-lg shadow-md bg-blue-200 hover:bg-blue-300"
         onClick={() => {
-          navigate(`/todo`);
+          redirect(`/todo`);
         }}
       >
         To Do List

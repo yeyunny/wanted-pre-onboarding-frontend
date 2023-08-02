@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { signController } from "../api/api";
-import { response } from "express";
+import { useNavigate } from "react-router-dom";
 
 interface Form {
   "email-input": string;
@@ -16,6 +16,7 @@ function Form({ page }: { page: string }) {
   const isEmail = form["email-input"].includes("@");
   const isPassword = form["password-input"].length >= 8;
   const isValid = !(isEmail && isPassword);
+  const navigate = useNavigate();
 
   const formHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     const targetName = event.target.getAttribute("data-testid");
@@ -24,8 +25,13 @@ function Form({ page }: { page: string }) {
 
   const buttonHandler = () => {
     signController(page, form["email-input"], form["password-input"]).then(
-      (data) => {
-        console.log(data);
+      (response) => {
+        if (page === "auth/signup") {
+          navigate("/signin");
+        } else {
+          localStorage.setItem("token", response.data.access_token);
+          navigate("/todo");
+        }
       }
     );
   };
