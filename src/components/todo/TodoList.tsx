@@ -1,25 +1,25 @@
 import { useEffect, useState } from "react";
-import { onGetTodo, onDeleteTodo } from "../../api/api";
+import { onGetTodo } from "../../api/api";
 import UpdateInput from "./UpdateInput";
 import ListInput from "./ListInput";
+import { TodoInfo } from "../../pages/Todo";
 
-export interface TodoInfo {
-  id: number;
-  todo: string;
-  isCompleted: boolean;
-  userId: number;
-}
-
-function TodoList() {
+function TodoList({
+  getTodo,
+  setGetTodo,
+}: {
+  getTodo: TodoInfo[];
+  setGetTodo: Function;
+}) {
   const token = localStorage.getItem("token");
-  const [getTodo, setGetTodo] = useState<TodoInfo[]>([]);
+
   const [updateId, setUpdateId] = useState<number>(0);
 
   useEffect(() => {
     onGetTodo(token!).then((res) => {
       return setGetTodo(res?.data);
     });
-  }, []);
+  }, [setGetTodo, token]);
 
   const updateHandler = (id: number) => {
     setUpdateId(id);
@@ -30,9 +30,19 @@ function TodoList() {
       <ul className="overflow-y-auto h-56">
         {getTodo.map((todo) => {
           return todo.id === updateId ? (
-            <UpdateInput todo={todo} />
+            <UpdateInput
+              key={todo.id}
+              todo={todo}
+              setGetTodo={setGetTodo}
+              setUpdateId={setUpdateId}
+            />
           ) : (
-            <ListInput todo={todo} updateHandler={updateHandler} />
+            <ListInput
+              key={todo.id}
+              todo={todo}
+              updateHandler={updateHandler}
+              setGetTodo={setGetTodo}
+            />
           );
         })}
       </ul>

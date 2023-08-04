@@ -1,18 +1,23 @@
-import { TodoInfo } from "./TodoList";
-import { onDeleteTodo } from "../../api/api";
+import { TodoInfo } from "../../pages/Todo";
+import { onDeleteTodo, onGetTodo } from "../../api/api";
 
 function ListInput({
   todo,
   updateHandler,
+  setGetTodo,
 }: {
   todo: TodoInfo;
   updateHandler: Function;
+  setGetTodo: Function;
 }) {
   const token = localStorage.getItem("token");
 
   const deleteHandler = (token: string, id: number) => {
     onDeleteTodo(token, id).then((res) => {
-      return console.log("삭제 완료 !");
+      onGetTodo(token!).then((res) => {
+        setGetTodo(res?.data);
+      });
+      alert("삭제 완료 !");
     });
   };
 

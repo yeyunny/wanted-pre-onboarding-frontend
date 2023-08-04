@@ -48,7 +48,25 @@ export async function onGetTodo(token: string) {
   }
 }
 
-// export async function onChangeTodo(token: string,
+export async function onUpdateTodo(token: string, id: number, todo: string) {
+  try {
+    return axios.put(
+      `https://www.pre-onboarding-selection-task.shop/todos/${id}`,
+      {
+        todo,
+        isCompleted: true,
+      },
+      {
+        headers: {
+          Authorization: "Bearer " + token,
+          "Content-type": "application/json",
+        },
+      }
+    );
+  } catch (e) {
+    console.error(e);
+  }
+}
 
 export async function onDeleteTodo(token: string, id: number) {
   try {

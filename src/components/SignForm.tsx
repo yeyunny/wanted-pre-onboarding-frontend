@@ -7,7 +7,7 @@ interface Form {
   "password-input": string;
 }
 
-function Form({ page }: { page: string }) {
+function SignForm({ page }: { page: string }) {
   const [form, setForm] = useState<Form>({
     "email-input": "",
     "password-input": "",
@@ -27,9 +27,11 @@ function Form({ page }: { page: string }) {
     signController(page, form["email-input"], form["password-input"]).then(
       (response) => {
         if (page === "auth/signup") {
+          alert("회원가입 성공!");
           navigate("/signin");
         } else {
           localStorage.setItem("token", response.data.access_token);
+          alert("로그인 성공!");
           navigate("/todo");
         }
       }
@@ -64,4 +66,4 @@ function Form({ page }: { page: string }) {
   );
 }
 
-export default Form;
+export default SignForm;

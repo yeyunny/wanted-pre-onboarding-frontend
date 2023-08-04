@@ -1,7 +1,7 @@
-import { useRef, useState } from "react";
-import { onCreateTodo } from "../../api/api";
+import { useState } from "react";
+import { onCreateTodo, onGetTodo } from "../../api/api";
 
-interface InputHandler {
+export interface InputHandler {
   preventDefault: () => void;
   target: { value: React.SetStateAction<string> };
 }
@@ -13,31 +13,22 @@ export interface SubmitHandler {
   userId: number;
 }
 
-function TodoInput() {
+function TodoInput({ setGetTodo }: { setGetTodo: Function }) {
   const [todoInput, setTodoInput] = useState("");
-  const [addTodo, setAddTodo] = useState<SubmitHandler[]>([]);
 
   const inputHandler = (event: InputHandler) => {
     setTodoInput(event.target.value);
   };
 
-  const userId = useRef(0);
   const token = localStorage.getItem("token");
 
   const submitHandler = () => {
-    let dateId = Date.now();
-    setAddTodo((prev: SubmitHandler[]) => [
-      ...prev,
-      {
-        id: dateId,
-        todo: todoInput,
-        isCompleted: false,
-        userId: userId.current,
-      },
-    ]);
-    userId.current = userId.current + 1;
-
-    onCreateTodo(todoInput, token!);
+    onCreateTodo(todoInput, token!).then((res) => {
+      onGetTodo(token!).then((res) => {
+        setGetTodo(res?.data);
+        setTodoInput("");
+      });
+    });
   };
 
   return (
@@ -46,6 +37,7 @@ function TodoInput() {
         data-testid="new-todo-input"
         className="bg-yellow-100 placeholder-black border border-gray-400"
         placeholder="오늘 할 일"
+        value={todoInput}
         onChange={inputHandler}
       ></input>
       <button
