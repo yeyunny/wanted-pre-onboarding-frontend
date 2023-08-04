@@ -17,21 +17,6 @@ export async function signController(
   );
 }
 
-// export async function onCreateTodo({ addTodo }: { addTodo: SubmitHandler[] }) {
-//   addTodo.map((item) => {
-//     return axios.post(`https://www.pre-onboarding-selection-task.shop/todos`, {
-//       id: item.id,
-//       todo: item.todo,
-//       isCompleted: item.isCompleted,
-//       userId: item.userId,
-//       headers: {
-//         Authorization: "Bearer " + token,
-//         "Content-Type": "application/json",
-//       },
-//     });
-//   });
-// }
-
 export async function onCreateTodo(todo: string, token: string) {
   try {
     return axios.post(
@@ -58,6 +43,23 @@ export async function onGetTodo(token: string) {
         Authorization: "Bearer " + token,
       },
     });
+  } catch (e) {
+    console.error(e);
+  }
+}
+
+// export async function onChangeTodo(token: string,
+
+export async function onDeleteTodo(token: string, id: number) {
+  try {
+    return axios.delete(
+      `https://www.pre-onboarding-selection-task.shop/todos/${id}`,
+      {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      }
+    );
   } catch (e) {
     console.error(e);
   }
