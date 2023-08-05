@@ -21,12 +21,14 @@ function UpdateInput({
   };
 
   const updateButtonHandler = () => {
-    onUpdateTodo(token!, todo.id, changeTodoInput).then((res) => {
-      onGetTodo(token!).then((res) => {
-        setGetTodo(res?.data);
-        cancelButtonHandler();
-      });
-    });
+    onUpdateTodo(token!, todo.id, changeTodoInput, todo.isCompleted).then(
+      (res) => {
+        onGetTodo(token!).then((res) => {
+          setGetTodo(res?.data);
+          cancelButtonHandler();
+        });
+      }
+    );
   };
 
   const cancelButtonHandler = () => {
@@ -35,7 +37,6 @@ function UpdateInput({
 
   return (
     <div>
-      <input type="checkbox"></input>
       <input
         data-testid="modify-input"
         value={changeTodoInput}

@@ -22,9 +22,8 @@ function ListInput({
   };
 
   return (
-    <li>
+    <div>
       <label>
-        <input type="checkbox"></input>
         <span key={todo.id}>{todo.todo}</span>
       </label>
       <button
@@ -41,7 +40,7 @@ function ListInput({
       >
         삭제
       </button>
-    </li>
+    </div>
   );
 }
 

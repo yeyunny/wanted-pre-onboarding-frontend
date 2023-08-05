@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { signController } from "../api/api";
 import { useNavigate } from "react-router-dom";
 
@@ -17,6 +17,12 @@ function SignForm({ page }: { page: string }) {
   const isPassword = form["password-input"].length >= 8;
   const isValid = !(isEmail && isPassword);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (localStorage.getItem("token")) {
+      navigate(`/todo`);
+    }
+  }, [navigate]);
 
   const formHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     const targetName = event.target.getAttribute("data-testid");

@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react";
-import { onGetTodo } from "../../api/api";
+import { useState } from "react";
 import UpdateInput from "./UpdateInput";
 import ListInput from "./ListInput";
 import { TodoInfo } from "../../pages/Todo";
+import { onUpdateTodo, onGetTodo } from "../../api/api";
 
 function TodoList({
   getTodo,
@@ -11,15 +11,16 @@ function TodoList({
   getTodo: TodoInfo[];
   setGetTodo: Function;
 }) {
+  const [updateId, setUpdateId] = useState<number>(0);
   const token = localStorage.getItem("token");
 
-  const [updateId, setUpdateId] = useState<number>(0);
-
-  useEffect(() => {
-    onGetTodo(token!).then((res) => {
-      return setGetTodo(res?.data);
+  const checkHandler = (todo: TodoInfo) => {
+    onUpdateTodo(token!, todo.id, todo.todo, !todo.isCompleted).then((res) => {
+      onGetTodo(token!).then((res) => {
+        setGetTodo(res?.data);
+      });
     });
-  }, [setGetTodo, token]);
+  };
 
   const updateHandler = (id: number) => {
     setUpdateId(id);
@@ -27,22 +28,31 @@ function TodoList({
 
   return (
     <div>
-      <ul className="overflow-y-auto h-56">
+      <ul className="overflow-y-auto h-56 ">
         {getTodo.map((todo) => {
-          return todo.id === updateId ? (
-            <UpdateInput
-              key={todo.id}
-              todo={todo}
-              setGetTodo={setGetTodo}
-              setUpdateId={setUpdateId}
-            />
-          ) : (
-            <ListInput
-              key={todo.id}
-              todo={todo}
-              updateHandler={updateHandler}
-              setGetTodo={setGetTodo}
-            />
+          return (
+            <li className="flex" key={todo.id}>
+              <input
+                type="checkbox"
+                checked={todo.isCompleted}
+                onChange={() => checkHandler(todo)}
+              ></input>
+              {todo.id === updateId ? (
+                <UpdateInput
+                  key={todo.id}
+                  todo={todo}
+                  setGetTodo={setGetTodo}
+                  setUpdateId={setUpdateId}
+                />
+              ) : (
+                <ListInput
+                  key={todo.id}
+                  todo={todo}
+                  updateHandler={updateHandler}
+                  setGetTodo={setGetTodo}
+                />
+              )}
+            </li>
           );
         })}
       </ul>

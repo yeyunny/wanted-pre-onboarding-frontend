@@ -5,11 +5,7 @@ function Main() {
   const navigate = useNavigate();
 
   const redirect = (page: string) => {
-    if (localStorage.getItem("token")) {
-      navigate(`/todo`);
-    } else {
-      page === "/todo" ? navigate(`/signin`) : navigate(page);
-    }
+    navigate(`${page}`);
   };
 
   return (

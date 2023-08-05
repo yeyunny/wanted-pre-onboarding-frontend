@@ -48,13 +48,18 @@ export async function onGetTodo(token: string) {
   }
 }
 
-export async function onUpdateTodo(token: string, id: number, todo: string) {
+export async function onUpdateTodo(
+  token: string,
+  id: number,
+  todo: string,
+  isCompleted: boolean
+) {
   try {
     return axios.put(
       `https://www.pre-onboarding-selection-task.shop/todos/${id}`,
       {
         todo,
-        isCompleted: true,
+        isCompleted,
       },
       {
         headers: {
