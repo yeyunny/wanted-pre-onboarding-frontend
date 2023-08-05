@@ -44,6 +44,7 @@ function TodoInput({ setGetTodo }: { setGetTodo: Function }) {
         data-testid="new-todo-add-button"
         className="bg-red-100 placeholder-black border border-gray-400"
         onClick={submitHandler}
+        disabled={todoInput.length > 0 ? false : true}
       >
         추가
       </button>
